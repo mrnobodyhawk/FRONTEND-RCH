@@ -6,17 +6,79 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UserNavbar from "../UserNavbar/UserNavbar";
 
-export default function UserMaintenance() {
+const initialState = {
+    requesterName: "",
+    roomNumber: "",
+    buildingNumber: "",
+    requestHeading: "",
+    description: "",
+    dateOfIssue: new Date(),
+};
+
+const fetchMaintenanceRequests = (userId, setMaintenanceRequests) => {
+    fetch(`http://localhost:8083/communityhub/user/maintenance/user/${userId}`)
+        .then((response) => response.json())
+        .then((data) => {
+            setMaintenanceRequests(data.reverse());
+        })
+        .catch((error) =>
+            console.error("Error fetching maintenance requests:", error)
+        );
+};
+
+const validateRequest = (newRequest) => {
+    const errors = {};
+    if (!newRequest.requesterName) {
+        errors.requesterName = "Please enter requester name.";
+    }
+    if (!newRequest.roomNumber) {
+        errors.roomNumber = "Please enter room number.";
+    }
+    if (!newRequest.buildingNumber) {
+        errors.buildingNumber = "Please enter building number.";
+    }
+    if (!newRequest.requestHeading) {
+        errors.requestHeading = "Please enter request heading.";
+    }
+    if (!newRequest.description) {
+        errors.description = "Please enter description.";
+    }
+    return errors;
+};
+
+const postNewRequest = (newRequest, cookies, setMaintenanceRequests, resetNewRequest) => {
+    fetch(`http://localhost:8083/communityhub/user/maintenance/raise`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            ...newRequest,
+            userId: cookies.userId,
+            userType: "RESIDENT",
+        }),
+    })
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error("Failed to raise maintenance request");
+            }
+        })
+        .then((data) => {
+            setMaintenanceRequests((prevRequests) => [data, ...prevRequests]);
+            resetNewRequest();
+            toast.success("Maintenance request raised successfully");
+        })
+        .catch((error) => {
+            console.error("Error raising maintenance request:", error);
+            toast.error("Failed to raise maintenance request");
+        });
+};
+
+const UserMaintenance = () => {
     const [maintenanceRequests, setMaintenanceRequests] = useState([]);
-    const [newRequest, setNewRequest] = useState({
-        requesterName: "",
-        roomNumber: "",
-        buildingNumber: "",
-        requesterNumber: "",
-        requestHeading: "",
-        description: "",
-        dateOfIssue: new Date(),
-    });
+    const [newRequest, setNewRequest] = useState(initialState);
     const [cookies] = useCookies(['userId', 'userType']);
     const navigate = useNavigate();
 
@@ -26,19 +88,8 @@ export default function UserMaintenance() {
             return;
         }
 
-        fetchMaintenanceRequests();
+        fetchMaintenanceRequests(cookies.userId, setMaintenanceRequests);
     }, [cookies.userId, cookies.userType, navigate]);
-
-    const fetchMaintenanceRequests = () => {
-        fetch(`http://localhost:8083/communityhub/user/maintenance/user/${cookies.userId}`)
-            .then((response) => response.json())
-            .then((data) => {
-                setMaintenanceRequests(data.reverse());
-            })
-            .catch((error) =>
-                console.error("Error fetching maintenance requests:", error)
-            );
-    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -49,78 +100,16 @@ export default function UserMaintenance() {
     };
 
     const handleRaiseRequest = () => {
-        const errors = validateRequest();
+        const errors = validateRequest(newRequest);
         if (Object.keys(errors).length === 0) {
-            postNewRequest();
+            postNewRequest(newRequest, cookies, setMaintenanceRequests, resetNewRequest);
         } else {
             displayErrors(errors);
         }
     };
 
-    const validateRequest = () => {
-        const errors = {};
-        if (!newRequest.requesterName) {
-            errors.requesterName = "Please enter requester name.";
-        }
-        if (!newRequest.roomNumber) {
-            errors.roomNumber = "Please enter room number.";
-        }
-        if (!newRequest.buildingNumber) {
-            errors.buildingNumber = "Please enter building number.";
-        }
-        if (!newRequest.requestHeading) {
-            errors.requestHeading = "Please enter request heading.";
-        }
-        if (!newRequest.description) {
-            errors.description = "Please enter description.";
-        }
-        return errors;
-    };
-
-    const postNewRequest = () => {
-        fetch(`http://localhost:8083/communityhub/user/maintenance/raise`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                ...newRequest,
-                userId: cookies.userId,
-                userType: "RESIDENT",
-            }),
-        })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error("Failed to raise maintenance request");
-                }
-            })
-            .then((data) => {
-                updateMaintenanceRequests(data);
-                resetNewRequest();
-                toast.success("Maintenance request raised successfully");
-            })
-            .catch((error) => {
-                console.error("Error raising maintenance request:", error);
-                toast.error("Failed to raise maintenance request");
-            });
-    };
-
-    const updateMaintenanceRequests = (data) => {
-        setMaintenanceRequests((prevRequests) => [data, ...prevRequests]);
-    };
-
     const resetNewRequest = () => {
-        setNewRequest({
-            requesterName: "",
-            roomNumber: "",
-            buildingNumber: "",
-            requesterNumber: "",
-            requestHeading: "",
-            description: "",
-            dateOfIssue: new Date(),
-        });
+        setNewRequest(initialState);
     };
 
     const displayErrors = (errors) => {
@@ -253,3 +242,5 @@ export default function UserMaintenance() {
         </div>
     );
 }
+
+export default UserMaintenance;
