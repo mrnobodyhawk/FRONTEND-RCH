@@ -90,7 +90,11 @@ const SignIn = () => {
                                 </form>
                             </div>
                             <div className="signin-create-account-link">
-                                <p>Don't have an account! <span onClick={() => navigate('/sign-up')}>Create an account</span></p>
+                                <p>Don't have an account! <span onClick={() => navigate('/sign-up')} onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        navigate('/sign-up');
+                                    }
+                                }}>Create an account</span></p>
                             </div>
                         </MDBCardBody>
                     </MDBCard>

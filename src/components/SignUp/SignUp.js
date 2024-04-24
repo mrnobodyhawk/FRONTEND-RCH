@@ -165,7 +165,11 @@ const SignUp = ({ setUserRole }) => {
                             </form>
 
                             <div className="signup-create-account-link">
-                                <p>Already have an account! <span onClick={() => navigate('/sign-in')}>Sign In</span></p>
+                                <p>Already have an account! <span onClick={() => navigate('/sign-in')} onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        navigate('/sign-in');
+                                    }
+                                }} >Sign In</span></p>
                             </div>
 
                         </MDBCardBody>
