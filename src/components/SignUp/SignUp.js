@@ -118,60 +118,60 @@ const SignUp = ({ setUserRole }) => {
 
     return (
         <div className='sign-up-main-container'>
-            <NavBar/>
-        <div className="signup-container">
-            <ToastContainer />
-            <div className='signup-logo'>
-                <img src={logo} className="signup-App-logo" alt="logo" />
-            </div>
+            <NavBar />
+            <div className="signup-container">
+                <ToastContainer />
+                <div className='signup-logo'>
+                    <img src={logo} className="signup-App-logo" alt="logo" />
+                </div>
 
-            <div className="signup-card">
-                <MDBCard>
-                    <MDBCardBody>
-                        <form onSubmit={handleSignUp}>
-                            <div className="signup-form-group">
-                                <input type="text" className="signup-input-field" name="userId" placeholder="Create User ID" value={userId} onChange={(e) => setUserId(e.target.value)} />
-                            </div>
-                            <div className="signup-form-group">
-                                <input type="text" className="signup-input-field" name="firstName" placeholder="Enter First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-                            </div>
-                            <div className="signup-form-group">
-                                <input type="text" className="signup-input-field" name="lastName" placeholder="Enter Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                            </div>
-                            <div className="signup-form-group">
-                                <input type="text" className="signup-input-field" name="username" placeholder="Create a new Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-                            </div>
-                            <div className="signup-form-group">
-                                <input type="password" className="signup-input-field" name="password" placeholder="Create Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                            </div>
-                            <div className="signup-form-group">
-                                <input type="text" className="signup-input-field" name="mobileNumber" placeholder="Enter Mobile Number" value={mobileNumber} onChange={(e) => setMobileNumber(e.target.value)} />
-                            </div>
-                            <div className="signup-form-group">
-                                <input type="text" className="signup-input-field" name="presentAddress" placeholder="Enter Present Address" value={presentAddress} onChange={(e) => setPresentAddress(e.target.value)} />
-                            </div>
-                            {userType === 'ADMIN' && (
+                <div className="signup-card">
+                    <MDBCard>
+                        <MDBCardBody>
+                            <form onSubmit={handleSignUp}>
                                 <div className="signup-form-group">
-                                    <input type="text" className="signup-input-field" name="adminCode" placeholder="Enter Admin Code" value={adminCode} onChange={(e) => setAdminCode(e.target.value)} />
+                                    <input type="text" className="signup-input-field" name="userId" placeholder="Create User ID" value={userId} onChange={(e) => setUserId(e.target.value)} />
                                 </div>
-                            )}
-                            <div className="signup-form-group">
-                                <select className="signup-input-field" name="userType" value={userType} onChange={(e) => setUserType(e.target.value)}>
-                                    <option value="RESIDENT">Resident</option>
-                                    <option value="ADMIN">Admin</option>
-                                </select>
+                                <div className="signup-form-group">
+                                    <input type="text" className="signup-input-field" name="firstName" placeholder="Enter First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                                </div>
+                                <div className="signup-form-group">
+                                    <input type="text" className="signup-input-field" name="lastName" placeholder="Enter Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                                </div>
+                                <div className="signup-form-group">
+                                    <input type="text" className="signup-input-field" name="username" placeholder="Create a new Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                                </div>
+                                <div className="signup-form-group">
+                                    <input type="password" className="signup-input-field" name="password" placeholder="Create Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                                </div>
+                                <div className="signup-form-group">
+                                    <input type="text" className="signup-input-field" name="mobileNumber" placeholder="Enter Mobile Number" value={mobileNumber} onChange={(e) => setMobileNumber(e.target.value)} />
+                                </div>
+                                <div className="signup-form-group">
+                                    <input type="text" className="signup-input-field" name="presentAddress" placeholder="Enter Present Address" value={presentAddress} onChange={(e) => setPresentAddress(e.target.value)} />
+                                </div>
+                                {userType === 'ADMIN' && (
+                                    <div className="signup-form-group">
+                                        <input type="text" className="signup-input-field" name="adminCode" placeholder="Enter Admin Code" value={adminCode} onChange={(e) => setAdminCode(e.target.value)} />
+                                    </div>
+                                )}
+                                <div className="signup-form-group">
+                                    <select className="signup-input-field" name="userType" value={userType} onChange={(e) => setUserType(e.target.value)}>
+                                        <option value="RESIDENT">Resident</option>
+                                        <option value="ADMIN">Admin</option>
+                                    </select>
+                                </div>
+                                <button type="submit" className={`signup-btn-primary ${isLoading ? 'signup-loading' : ''}`} disabled={isLoading}>{isLoading ? 'Signing Up...' : 'Sign Up'}</button>
+                            </form>
+
+                            <div className="signup-create-account-link">
+                                <p>Already have an account! <span onClick={() => navigate('/sign-in')}>Sign In</span></p>
                             </div>
-                            <button type="submit" className={`signup-btn-primary ${isLoading ? 'signup-loading' : ''}`} disabled={isLoading}>{isLoading ? 'Signing Up...' : 'Sign Up'}</button>
-                        </form>
 
-                        <div className="signup-create-account-link">
-                            <p>Already have an account! <span onClick={() => console.log("Redirect to sign in page")}>Sign In</span></p>
-                        </div>
-
-                    </MDBCardBody>
-                </MDBCard>
+                        </MDBCardBody>
+                    </MDBCard>
+                </div>
             </div>
-        </div>
         </div>
     );
 };

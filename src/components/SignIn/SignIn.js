@@ -90,7 +90,7 @@ const SignIn = () => {
                                 </form>
                             </div>
                             <div className="signin-create-account-link">
-                                <p>Don't have an account! <span onClick={() => console.log("Redirect to sign up page")}>Create an account</span></p>
+                                <p>Don't have an account! <span onClick={() => navigate('/sign-up')}>Create an account</span></p>
                             </div>
                         </MDBCardBody>
                     </MDBCard>
