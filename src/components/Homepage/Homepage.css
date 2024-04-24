@@ -1,0 +1,39 @@
+.Homepage {
+  text-align: center;
+}
+
+.Homepage-logo {
+  margin-top: -18%;
+  height: 32vmin;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .Homepage-logo {
+    animation: Homepage-logo-spin infinite 20s linear;
+  }
+}
+
+.Homepage-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Homepage-link {
+  color: #61dafb;
+}
+
+@keyframes Homepage-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

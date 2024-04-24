@@ -1,0 +1,117 @@
+.sign-up-main-container {
+    width: 100vw; /* Set width to 100% of viewport width */
+    height: 100vh; /* Set height to 100% of viewport height */
+    background-image: url(../Media/Images/sign-up.jpg); /* Set the background image */
+    background-position: center; /* Center the background image */
+    background-size: cover; /* Cover the entire container with the background image */
+    background-repeat: no-repeat; /* Do not repeat the background image */
+    background-attachment: fixed; /* Keep the background image fixed while scrolling */
+    background-color: black; /* Fallback background color */
+    overflow: hidden; /* Hide any content that overflows the container */
+    display: flex; /* Use flexbox for layout */
+    justify-content: center; /* Horizontally center the content */
+    align-items: center; /* Vertically center the content */
+}
+
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 77vh;
+    width: 100%;
+    background-size: cover;
+    margin-top: -4%;
+    margin-left: -5%;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    
+    /* Center the background */
+}
+
+.signup-card {
+    max-width: 450px;
+    /* Change width to max-width */
+    width: 100%;
+    margin-top: 13%;
+    margin-bottom: 5%;
+    /* Add this to ensure responsiveness */
+}
+
+.signup-form-group {
+    margin-bottom: 1.5%;
+}
+
+.signup-input-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.signup-btn-primary {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.signup-btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.signup-create-account-link {
+    margin-top: 2%;
+    text-align: center;
+}
+
+.signup-create-account-link span {
+    color: #007bff;
+    cursor: pointer;
+}
+
+.signup-create-account-link span:hover {
+    text-decoration: underline;
+}
+
+.signup-App-logo {
+    margin-top: -18%;
+    height: 27vmin;
+    pointer-events: none;
+    border-radius: 50%;
+}
+
+.signup-logo {
+    margin: 15%;
+}
+
+
+/* Media queries for phone resolution */
+@media only screen and (max-width: 600px) {
+    body {
+        background-color: #282c34;
+    }
+    .signup-container {
+        display: flex;
+        flex-direction: column;
+    }
+    .signup-logo {
+        margin-top: 35.5%;
+    }
+    .signup-App-logo {
+        size: 50%;
+    }
+    .signup-create-account-link {
+        font-size: 14px;
+    }
+    .signup-card {
+        margin-top: -12%;
+        width: 85%;
+        height: 75vh;
+    }
+}
+

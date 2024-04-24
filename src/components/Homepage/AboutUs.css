@@ -1,0 +1,36 @@
+/* Set the container to take up the full viewport */
+.about-us-container {
+    width: 100vw; /* Set width to 100% of viewport width */
+    height: 100vh; /* Set height to 100% of viewport height */
+    background-image: url(../Media/Images/about-us.jpg); /* Set the background image */
+    background-position: center; /* Center the background image */
+    background-size: cover; /* Cover the entire container with the background image */
+    background-repeat: no-repeat; /* Do not repeat the background image */
+    background-attachment: fixed; /* Keep the background image fixed while scrolling */
+    background-color: black; /* Fallback background color */
+    overflow: hidden; /* Hide any content that overflows the container */
+    display: flex; /* Use flexbox for layout */
+    justify-content: center; /* Horizontally center the content */
+    align-items: center; /* Vertically center the content */
+}
+
+/* Style for the headline text */
+.about-us-headline {
+    margin-left: 35%;
+    font-size: 160px;
+    font-family: monospace; /* Set the font family */
+    color: white; /* Set the text color */
+    animation: fadeIn 1s ease; /* Apply the fadeIn animation with a duration of 1 second and ease easing function */
+}
+
+/* Define the fadeIn animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0; /* Start with opacity 0 */
+        transform: translateY(-20px); /* Move the text up by 20 pixels */
+    }
+    to {
+        opacity: 1; /* End with opacity 1 */
+        transform: translateY(0); /* Return the text to its original position */
+    }
+}

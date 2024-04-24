@@ -1,0 +1,128 @@
+.sign-in-main-container {
+  width: 100vw; /* Set width to 100% of viewport width */
+    height: 100vh; /* Set height to 100% of viewport height */
+    background-image: url(../Media/Images/sign-in.jpg); /* Set the background image */
+    background-position: center; /* Center the background image */
+    background-size: cover; /* Cover the entire container with the background image */
+    background-repeat: no-repeat; /* Do not repeat the background image */
+    background-attachment: fixed; /* Keep the background image fixed while scrolling */
+    background-color: black; /* Fallback background color */
+    overflow: hidden; /* Hide any content that overflows the container */
+    display: flex; /* Use flexbox for layout */
+    justify-content: center; /* Horizontally center the content */
+    align-items: center; /* Vertically center the content */
+}
+
+.signin-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 77vh;
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-left: -5%;
+  /* Center the background */
+}
+
+.signin-card {
+  max-width: 450px;
+  /* Change width to max-width */
+  width: 100%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  /* Add this to ensure responsiveness */
+}
+
+.signin-form-group {
+  margin-bottom: 1.5%;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.signin-btn-primary {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.signin-btn-primary:hover {
+  background-color: #0056b3;
+}
+
+@keyframes ellipsis {
+  to {
+      width: 1em;
+  }
+}
+
+.signin-btn-primary.loading:after {
+  content: "!";
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  width: 0;
+  animation: ellipsis 1s infinite;
+}
+
+.signin-create-account-link {
+  margin-top: 2%;
+  text-align: center;
+}
+
+.signin-create-account-link span {
+  color: #007bff;
+  cursor: pointer;
+}
+
+.signin-create-account-link span:hover {
+  text-decoration: underline;
+}
+
+.App-logo {
+  margin-top: -18%;
+  height: 27vmin;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.signin-logo {
+  margin: 15%;
+}
+
+
+/* Media queries for phone resolution */
+@media only screen and (max-width: 600px) {
+  .signin-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1%;
+  }
+
+  .App-logo {
+    size: 50%;
+  }
+
+
+  .create-account-link {
+    font-size: 14px;
+  }
+
+  .signin-card {
+    margin-top: -10%;
+    width: 85%;
+    height: 75vh;
+  }
+
+}

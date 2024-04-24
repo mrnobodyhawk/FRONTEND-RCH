@@ -1,0 +1,29 @@
+/* CSS for UserMaintenance.css */
+
+.user-table-container {
+    margin-top: 4%;
+    margin-left: 3%;
+    margin-right: 5%;
+    font-family: monospace;
+    overflow-x: auto; /* Enable horizontal scrolling for smaller screens */
+}
+
+/* Style for the table */
+.user-table {
+    width: 10%; /* Set table width to fill the screen */
+    border-collapse: collapse;
+}
+
+.user-table th,
+.user-table td {
+    padding: 8px;
+    text-align: left;
+}
+
+.user-table tbody tr:nth-of-type(even) {
+    background-color: #f2f2f2;
+}
+
+.user-table tbody tr:hover {
+    background-color: #ddd;
+}

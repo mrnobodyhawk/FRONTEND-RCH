@@ -1,0 +1,44 @@
+.admin-visitor-container {
+    margin-top: 4%;
+    margin-left: 3%;
+    margin-right: 5%;
+    font-family: monospace;
+    overflow-x: auto;
+  }
+
+  
+  
+  /* Media query for phone devices */
+  @media screen and (max-width: 767px) {
+    .admin-visitor-container {
+      margin-top: 12%;
+      margin-left: 2%;
+      margin-right: 2%;
+      overflow-x: auto;
+    }
+  
+    .admin-visitor-container h2 {
+      margin-top: 2%;
+      font-size: 1.5rem; /* Adjust font size for smaller screens */
+    }
+  
+    .admin-visitor-container .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+  
+    .admin-visitor-container .table th,
+    .admin-visitor-container .table td {
+      padding: 8px;
+      font-size: 0.8rem; /* Adjust font size for smaller screens */
+    }
+  
+    .admin-visitor-container .table tbody tr:nth-of-type(even) {
+      background-color: #f2f2f2;
+    }
+  
+    .admin-visitor-container .table tbody tr:hover {
+      background-color: #ddd;
+    }
+  }
+  

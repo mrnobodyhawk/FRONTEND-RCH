@@ -1,0 +1,54 @@
+.table-container-visitor {
+    margin-top: 4%;
+    margin-left: 2%;
+    margin-right: 5%;
+    font-family: monospace;
+    overflow-x: auto;
+}
+
+#empty-msg {
+    font-size: 200%;
+}
+
+
+
+/* Media query for phone devices */
+@media screen and (max-width: 767px) {
+    .table-container {
+        margin-top: 12%;
+        margin-left: 2%;
+        margin-right: 2%;
+        overflow-x: auto;
+    }
+
+    #headline_of_visitors {
+        margin-top: 11%;
+        font-size: 1.5rem;
+        /* Adjust font size for smaller screens */
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+        padding: 8px;
+        font-size: 0.8rem;
+        /* Adjust font size for smaller screens */
+    }
+
+    .error-message {
+        font-size: 0.8rem;
+        /* Adjust font size for smaller screens */
+    }
+
+    .table tbody tr:nth-of-type(even) {
+        background-color: #f2f2f2;
+    }
+
+    .table tbody tr:hover {
+        background-color: #ddd;
+    }
+}

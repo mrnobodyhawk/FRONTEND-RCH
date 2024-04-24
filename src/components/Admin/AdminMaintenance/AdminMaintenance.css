@@ -1,0 +1,33 @@
+/* CSS for UserMaintenance.css */
+
+.admin-table-container {
+    margin-top: 4%;
+    margin-left: 3%;
+    margin-right: 5%;
+    font-family: monospace;
+    overflow-x: auto; /* Enable horizontal scrolling for smaller screens */
+    
+}
+
+
+/* Style for the table */
+.admin-table {
+    width: 100%; /* Set table width to fill the screen */
+    border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 8px;
+    text-align: left;
+}
+
+.admin-table tbody tr:nth-of-type(even) {
+    background-color: #f2f2f2;
+}
+
+.admin-table tbody tr:hover {
+    background-color: #ddd;
+}
+
+
