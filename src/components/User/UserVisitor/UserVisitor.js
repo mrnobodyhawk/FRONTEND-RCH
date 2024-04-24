@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from "react-datepicker";
@@ -20,6 +20,16 @@ export default function UserVisitor() {
   const userId = cookies.userId || 0;
   const navigate = useNavigate();
 
+  const fetchVisitorRecords = useCallback(() => {
+    fetch(`http://localhost:8084/communityhub/user/visitors/user/${userId}`)
+      .then(response => response.json())
+      .then(data => {
+        const sortedData = data.sort((a, b) => b.visitorId - a.visitorId);
+        setVisitorRecords(sortedData);
+      })
+      .catch(error => console.error('Error fetching visitor records:', error));
+  }, [userId]);
+
   useEffect(() => {
     if (userId === 0 || cookies.userType !== "RESIDENT") {
       navigate('/sign-in');
@@ -28,17 +38,7 @@ export default function UserVisitor() {
 
   useEffect(() => {
     fetchVisitorRecords();
-  }, [userId]);
-
-  const fetchVisitorRecords = () => {
-    fetch(`http://localhost:8084/communityhub/user/visitors/user/${userId}`)
-      .then(response => response.json())
-      .then(data => {
-        const sortedData = data.sort((a, b) => b.visitorId - a.visitorId);
-        setVisitorRecords(sortedData);
-      })
-      .catch(error => console.error('Error fetching visitor records:', error));
-  };
+  }, [userId, fetchVisitorRecords]);
 
   const handleDateChange = (date, field) => {
     setNewVisitor(prevState => ({
