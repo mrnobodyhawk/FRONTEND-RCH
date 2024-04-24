@@ -90,25 +90,25 @@ export default function AdminMaintenance() {
                 <table aria-label="Maintenance Requests" className="admin-table">
                     <thead>
                         <tr>
-                            <th>REQUESTER NAME</th>
-                            <th>ROOM NUMBER</th>
-                            <th>BUILDING NUMBER</th>
-                            <th>REQUEST HEADING</th>
-                            <th>DESCRIPTION</th>
-                            <th>DATE OF ISSUE</th>
-                            <th>STATUS</th>
-                            <th>ACTION</th>
+                            <th>REQUESTER_NAME</th>
+                            <th>ROOM_NUMBER</th>
+                            <th>BUILDING_NUMBER</th>
+                            <th>REQUEST_HEADING</th>
+                            <th>REQUEST_DESCRIPTION</th>
+                            <th>DATE_OF_ISSUE</th>
+                            <th>REQUEST_STATUS</th>
+                            <th>UPDATE_BUTTON</th>
                         </tr>
                     </thead>
                     <tbody>
                         {maintenanceRequests.map((row) => (
                             <tr key={row.id}>
-                                <td>{row.requesterName}</td>
-                                <td>{row.roomNumber}</td>
-                                <td>{row.buildingNumber}</td>
-                                <td>{row.requestHeading}</td>
-                                <td>{row.description}</td>
-                                <td>{new Date(row.dateOfIssue).toDateString()}</td>
+                                <td>{row.requesterName}</td> {/* Display requester name */}
+                                <td>{row.roomNumber}</td> {/* Display room number */}
+                                <td>{row.buildingNumber}</td> {/* Display building number */}
+                                <td>{row.requestHeading}</td> {/* Display request heading */}
+                                <td>{row.description}</td> {/* Display request description */}
+                                <td>{new Date(row.dateOfIssue).toDateString()}</td> {/* Display date of issue */}
                                 <td>
                                     {editedStatusId === row.id ? (
                                         <input
