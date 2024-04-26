@@ -7,8 +7,10 @@ import { MDBCard, MDBCardBody } from 'mdb-react-ui-kit';
 import './SignUp.css';
 import NavBar from '../Homepage/NavBar';
 import { useCookies } from 'react-cookie';
+import axios from 'axios';
 
-const SignUp = ({ setUserRole }) => {
+const SignUp = () => {
+    // State variables for form fields
     const [userId, setUserId] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -20,13 +22,16 @@ const SignUp = ({ setUserRole }) => {
     const [adminCode, setAdminCode] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+    // Cookie management hook
     const [, setCookie] = useCookies(['userId', 'userType']);
 
+    // Navigation hook
     const navigate = useNavigate();
 
+    // Function to handle sign up form submission
     const handleSignUp = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
+        e.preventDefault(); // Prevent default form submission behavior
+        setIsLoading(true); // Set loading state to true
 
         // Check if any field is empty
         const emptyFields = [userId, firstName, lastName, username, password, mobileNumber, presentAddress]
@@ -34,28 +39,64 @@ const SignUp = ({ setUserRole }) => {
 
         if (emptyFields.length > 0) {
             toast.warn('Please fill in all details.');
-            setIsLoading(false);
+            setIsLoading(false); // Set loading state to false
             return;
         }
 
         try {
+
             // Check if a user with the same userId exists
-            const userResponse = await fetch(`http://localhost:8082/communityhub/user/getUser/${userId}`);
-            const userData = await userResponse.json();
+            const userResponse = await axios.get(`http://localhost:8082/communityhub/user/getUser/${userId}`);
+            const userData = userResponse.data;
 
             if (userData.length > 0) {
                 toast.error(`User ID ${userId} is already registered.`);
-                setIsLoading(false);
+                setIsLoading(false); // Set loading state to false
+                return;
+            }
+
+            // Check if first name contains only letters
+            if (!/^[a-zA-Z]+$/.test(firstName)) {
+                toast.error('First name should contain only letters.');
+                setIsLoading(false); // Set loading state to false
+                return;
+            }
+
+            // Check if last name contains only letters
+            if (!/^[a-zA-Z]+$/.test(lastName)) {
+                toast.error('Last name should contain only letters.');
+                setIsLoading(false); // Set loading state to false
+                return;
+            }
+
+            // Check if username contains only letters
+            if (!/^[a-zA-Z]+$/.test(username)) {
+                toast.error('Username should contain only letters.');
+                setIsLoading(false); // Set loading state to false
                 return;
             }
 
             // Check if username already exists
-            const usernameResponse = await fetch(`http://localhost:8082/communityhub/user/username/${username}`);
-            const usernameData = await usernameResponse.text();
+            const usernameResponse = await axios.get(`http://localhost:8082/communityhub/user/username/${username}`);
+            const usernameData = usernameResponse.data;
 
             if (usernameData === 'Username already exist') {
                 toast.error(`Username ${username} is already registered.`);
-                setIsLoading(false);
+                setIsLoading(false); // Set loading state to false
+                return;
+            }
+
+            // Check if password meets complexity requirements
+            if (password.length < 5 || !/[a-zA-Z]/.test(password) || !/\d/.test(password)) {
+                toast.error('Password should be at least 5 characters long and contain at least one letter and one number.');
+                setIsLoading(false); // Set loading state to false
+                return;
+            }
+
+            // Check if mobile number is valid
+            if (!/^[6-9]\d{9}$/.test(mobileNumber)) {
+                toast.error('Mobile number should be 10 digits long and start with 6, 7, 8, or 9.');
+                setIsLoading(false); // Set loading state to false
                 return;
             }
 
@@ -63,39 +104,36 @@ const SignUp = ({ setUserRole }) => {
             if (userType === 'ADMIN') {
                 if (adminCode === '') {
                     toast.error('Please enter the ADMIN code.');
-                    setIsLoading(false);
+                    setIsLoading(false); // Set loading state to false
                     return;
                 } else if (adminCode !== 'TVH') {
                     toast.error('Invalid ADMIN code.');
-                    setIsLoading(false);
+                    setIsLoading(false); // Set loading state to false
                     return;
                 }
             }
 
+            // Set cookies for user ID and type
             setCookie('userId', userId, { path: '/' });
             setCookie('userType', userType, { path: '/' });
 
             // Send user data to the server for saving
-            const response = await fetch('http://localhost:8082/communityhub/user/signUp', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    userId,
-                    firstName,
-                    lastName,
-                    username,
-                    password,
-                    mobileNumber,
-                    presentAddress,
-                    userType,
-                }),
+            const response = await axios.post('http://localhost:8082/communityhub/user/signUp', {
+                userId,
+                firstName,
+                lastName,
+                username,
+                password,
+                mobileNumber,
+                presentAddress,
+                userType,
             });
 
-            if (response.ok) {
+            // Handle successful sign up
+            if (response.status === 200) {
                 toast.success('Successfully signed up!');
-                setIsLoading(false);
+                setIsLoading(false); // Set loading state to false
+                // Redirect user to appropriate dashboard after a delay
                 if (userType === 'RESIDENT') {
                     setTimeout(() => {
                         navigate('/user-dashboard');
@@ -111,15 +149,16 @@ const SignUp = ({ setUserRole }) => {
         } catch (error) {
             console.error('Error checking user existence:', error);
             toast.error(`Error checking user existence: ${error.message}`);
-            setIsLoading(false);
+            setIsLoading(false); // Set loading state to false
         }
     };
 
-
     return (
         <div className='sign-up-main-container'>
+            {/* Navigation bar component */}
             <NavBar />
             <div className="signup-container">
+                {/* Toast container for displaying messages */}
                 <ToastContainer />
                 <div className='signup-logo'>
                     <img src={logo} className="signup-App-logo" alt="logo" />
@@ -128,6 +167,7 @@ const SignUp = ({ setUserRole }) => {
                 <div className="signup-card">
                     <MDBCard>
                         <MDBCardBody>
+                            {/* Sign-up form */}
                             <form onSubmit={handleSignUp}>
                                 <div className="signup-form-group">
                                     <input type="text" className="signup-input-field" name="userId" placeholder="Create User ID" value={userId} onChange={(e) => setUserId(e.target.value)} />
@@ -150,20 +190,24 @@ const SignUp = ({ setUserRole }) => {
                                 <div className="signup-form-group">
                                     <input type="text" className="signup-input-field" name="presentAddress" placeholder="Enter Present Address" value={presentAddress} onChange={(e) => setPresentAddress(e.target.value)} />
                                 </div>
+                                {/* Conditional rendering for admin code input based on user type */}
                                 {userType === 'ADMIN' && (
                                     <div className="signup-form-group">
                                         <input type="text" className="signup-input-field" name="adminCode" placeholder="Enter Admin Code" value={adminCode} onChange={(e) => setAdminCode(e.target.value)} />
                                     </div>
                                 )}
+                                {/* Dropdown for selecting user type */}
                                 <div className="signup-form-group">
                                     <select className="signup-input-field" name="userType" value={userType} onChange={(e) => setUserType(e.target.value)}>
                                         <option value="RESIDENT">Resident</option>
                                         <option value="ADMIN">Admin</option>
                                     </select>
                                 </div>
+                                {/* Submit button with loading indicator */}
                                 <button type="submit" className={`signup-btn-primary ${isLoading ? 'signup-loading' : ''}`} disabled={isLoading}>{isLoading ? 'Signing Up...' : 'Sign Up'}</button>
                             </form>
 
+                            {/* Link to sign in page */}
                             <div className="signup-create-account-link">
                                 <p>Already have an account! <span onClick={() => navigate('/sign-in')} onKeyDown={(e) => {
                                     if (e.key === 'Enter') {

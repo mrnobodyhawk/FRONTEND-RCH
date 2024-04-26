@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import UserNavbar from '../UserNavbar/UserNavbar';
-import './UserHomepage.css'; // Import your CSS file for homepage styles
+import './UserHomepage.css'; // Import CSS file for homepage styles
 
 function UserHomepage() {
     useEffect(() => {
@@ -21,11 +21,11 @@ function UserHomepage() {
 
     return (
         <div>
-            <UserNavbar /> {/* Include UserNavbar component */}
-            <div className='user-homepage-container'> {/* Apply user-homepage-container style */}
-                <div className='user-homepage-headline'> {/* Apply user-homepage-headline style */}
-                    <h1 className="right-aligned">Hello Resident,</h1> {/* Include greeting text with right alignment */}
-                    <h1 id='typing-line' className="right-aligned">! </h1> {/* Include typing line with right alignment */}
+            <UserNavbar /> 
+            <div className='user-homepage-container'> 
+                <div className='user-homepage-headline'> 
+                    <h1 className="right-aligned">Hello Resident,</h1> 
+                    <h1 id='typing-line' className="right-aligned">!</h1> 
                 </div>
             </div>
         </div>

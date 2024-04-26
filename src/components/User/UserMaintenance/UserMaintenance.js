@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UserNavbar from "../UserNavbar/UserNavbar";
+import axios from "axios";
 
 const initialState = {
     requesterName: "",
@@ -16,10 +17,9 @@ const initialState = {
 };
 
 const fetchMaintenanceRequests = (userId, setMaintenanceRequests) => {
-    fetch(`http://localhost:8083/communityhub/user/maintenance/user/${userId}`)
-        .then((response) => response.json())
-        .then((data) => {
-            setMaintenanceRequests(data.reverse());
+    axios.get(`http://localhost:8083/communityhub/user/maintenance/user/${userId}`)
+        .then((response) => {
+            setMaintenanceRequests(response.data.reverse());
         })
         .catch((error) =>
             console.error("Error fetching maintenance requests:", error)
@@ -47,26 +47,13 @@ const validateRequest = (newRequest) => {
 };
 
 const postNewRequest = (newRequest, cookies, setMaintenanceRequests, resetNewRequest) => {
-    fetch(`http://localhost:8083/communityhub/user/maintenance/raise`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+    axios.post(`http://localhost:8083/communityhub/user/maintenance/raise`, {
             ...newRequest,
             userId: cookies.userId,
             userType: "RESIDENT",
-        }),
-    })
-        .then((response) => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error("Failed to raise maintenance request");
-            }
         })
-        .then((data) => {
-            setMaintenanceRequests((prevRequests) => [data, ...prevRequests]);
+        .then((response) => {
+            setMaintenanceRequests((prevRequests) => [response.data, ...prevRequests]);
             resetNewRequest();
             toast.success("Maintenance request raised successfully");
         })
@@ -119,18 +106,12 @@ const UserMaintenance = () => {
     };
 
     const handleDeleteRequest = (id) => {
-        fetch(`http://localhost:8083/communityhub/user/maintenance/delete/${id}`, {
-            method: "DELETE",
-        })
-            .then((response) => {
-                if (response.ok) {
-                    setMaintenanceRequests((prevRequests) =>
-                        prevRequests.filter((request) => request.id !== id)
-                    );
-                    toast.success("Maintenance request deleted successfully");
-                } else {
-                    throw new Error("Failed to delete maintenance request");
-                }
+        axios.delete(`http://localhost:8083/communityhub/user/maintenance/delete/${id}`)
+            .then(() => {
+                setMaintenanceRequests((prevRequests) =>
+                    prevRequests.filter((request) => request.id !== id)
+                );
+                toast.success("Maintenance request deleted successfully");
             })
             .catch((error) => {
                 console.error("Error deleting maintenance request:", error);

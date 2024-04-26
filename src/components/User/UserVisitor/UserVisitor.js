@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import UserNavbar from "../UserNavbar/UserNavbar";
+import axios from 'axios'; 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './UserVisitor.css';
 
 export default function UserVisitor() {
@@ -15,16 +18,14 @@ export default function UserVisitor() {
     checkInDate: null,
     checkOutDate: null
   });
-  const [validationErrors, setValidationErrors] = useState({});
   const [cookies] = useCookies(['userId', 'userType']);
   const userId = cookies.userId || 0;
   const navigate = useNavigate();
 
   const fetchVisitorRecords = useCallback(() => {
-    fetch(`http://localhost:8084/communityhub/user/visitors/user/${userId}`)
-      .then(response => response.json())
-      .then(data => {
-        const sortedData = data.sort((a, b) => b.visitorId - a.visitorId);
+    axios.get(`http://localhost:8084/communityhub/user/visitors/user/${userId}`)
+      .then(response => {
+        const sortedData = response.data.reverse();
         setVisitorRecords(sortedData);
       })
       .catch(error => console.error('Error fetching visitor records:', error));
@@ -33,12 +34,10 @@ export default function UserVisitor() {
   useEffect(() => {
     if (userId === 0 || cookies.userType !== "RESIDENT") {
       navigate('/sign-in');
+    } else {
+      fetchVisitorRecords();
     }
-  }, [userId, cookies.userType, navigate]);
-
-  useEffect(() => {
-    fetchVisitorRecords();
-  }, [userId, fetchVisitorRecords]);
+  }, [userId, cookies.userType, navigate, fetchVisitorRecords]);
 
   const handleDateChange = (date, field) => {
     setNewVisitor(prevState => ({
@@ -57,13 +56,20 @@ export default function UserVisitor() {
 
   const handleAdd = () => {
     const errors = validateVisitor();
+    const currentDate = new Date();
+
     if (Object.keys(errors).length === 0) {
-      postVisitor();
+      if (newVisitor.checkInDate < currentDate) {
+        toast.error("Check-in date cannot be before current date and time.");
+      } else if (newVisitor.checkOutDate <= newVisitor.checkInDate) {
+        toast.error("Check-out date must be after check-in date.");
+      } else {
+        postVisitor();
+      }
     } else {
-      setValidationErrors(errors);
-      setTimeout(() => {
-        setValidationErrors({});
-      }, 2000);
+      Object.values(errors).forEach(error => {
+        toast.error(error);
+      });
     }
   };
 
@@ -84,27 +90,22 @@ export default function UserVisitor() {
     if (!newVisitor.checkOutDate) {
       errors.checkOutDate = "Please select check-out date.";
     } else if (newVisitor.checkOutDate <= newVisitor.checkInDate) {
-      errors.checkOutDate = "Check-out date cannot be before check-in date.";
+      errors.checkOutDate = "Check-out date must be after check-in date.";
     }
     return errors;
   };
 
   const postVisitor = () => {
-    fetch(`http://localhost:8084/communityhub/user/visitors/create`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        ...newVisitor,
-        userId: userId,
-        userType: "RESIDENT"
-      })
+    axios.post(`http://localhost:8084/communityhub/user/visitors/create`, {
+      ...newVisitor,
+      userId: userId,
+      userType: "RESIDENT"
     })
       .then(response => {
-        if (response.ok) {
+        if (response.status === 200) {
           fetchVisitorRecords();
           resetNewVisitor();
+          toast.success("Visitor added successfully!");
         } else {
           throw new Error('Failed to add new visitor record');
         }
@@ -123,12 +124,11 @@ export default function UserVisitor() {
   };
 
   const handleDelete = (visitorId) => {
-    fetch(`http://localhost:8084/communityhub/user/visitors/delete/${visitorId}`, {
-      method: 'DELETE'
-    })
+    axios.delete(`http://localhost:8084/communityhub/user/visitors/delete/${visitorId}`)
       .then(response => {
-        if (response.ok) {
+        if (response.status === 200) {
           setVisitorRecords(visitorRecords.filter(record => record.visitorId !== visitorId));
+          toast.success("Visitor deleted successfully!");
         } else {
           throw new Error('Failed to delete record');
         }
@@ -150,6 +150,7 @@ export default function UserVisitor() {
       <UserNavbar />
       <div className="table-container-visitor">
         <h2 id="headline_of_visitors">Visitors List</h2>
+        <ToastContainer />
         <table aria-label="Visitor Records" className="table">
           <thead>
             <tr>
@@ -195,7 +196,6 @@ export default function UserVisitor() {
                         timeIntervals={15}
                         dateFormat="MMMM d, yyyy h:mm aa"
                       />
-                      {validationErrors[key] && <div className="error-message">{validationErrors[key]}</div>}
                     </> :
                     <>
                       <input
@@ -204,7 +204,6 @@ export default function UserVisitor() {
                         value={newVisitor[key]}
                         onChange={handleInputChange}
                       />
-                      {validationErrors[key] && <div className="error-message">{validationErrors[key]}</div>}
                     </>
                   }
                 </td>

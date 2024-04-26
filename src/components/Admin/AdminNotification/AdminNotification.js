@@ -33,7 +33,7 @@ const AdminNotification = () => {
     const fetchNotifications = async () => {
         try {
             const response = await axios.get('http://localhost:8085/communityhub/user/notification/getAll');
-            const sortedNotifications = response.data.sort((a, b) => new Date(b.dateOfPost) - new Date(a.dateOfPost));
+            const sortedNotifications = response.data.reverse();
             setNotifications(sortedNotifications);
         } catch (error) {
             console.error('Error fetching notifications:', error);

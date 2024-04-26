@@ -15,7 +15,6 @@ import AdminHomepage from './components/Admin/AdminHomepage/AdminHomepage';
 import AdminVisitor from './components/Admin/AdminVisitor/AdminVisitor';
 import AdminMaintenance from './components/Admin/AdminMaintenance/AdminMaintenance';
 import AdminNotification from './components/Admin/AdminNotification/AdminNotification';
-import NavBar from './components/Homepage/NavBar';
 
 function App() {
   return (
@@ -23,7 +22,6 @@ function App() {
       <header className="App-header">
 
         <BrowserRouter>
-          <NavBar />
           <Routes>
             <Route exact path="/" element={<Homepage />} />
             <Route exact path="/sign-in" element={<SignIn />} />

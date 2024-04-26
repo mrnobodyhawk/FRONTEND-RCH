@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import './AdminVisitor.css'; // Reusing the CSS for styling
 import AdminNavbar from "../AdminNavbar/AdminNavbar";
 import { useCookies } from 'react-cookie';
+import axios from 'axios';
 
 export default function AdminVisitor() {
     const [visitorRecords, setVisitorRecords] = useState([]);
@@ -16,10 +17,9 @@ export default function AdminVisitor() {
         if (cookies.userId === 0 || cookies.userType !== "ADMIN") {
             navigate('/sign-in');
         } else {
-            fetch(`http://localhost:8084/communityhub/user/visitors/all`)
-                .then(response => response.json())
-                .then(data => {
-                    setVisitorRecords(data.reverse());
+            axios.get(`http://localhost:8084/communityhub/user/visitors/all`)
+                .then(response => {
+                    setVisitorRecords(response.data.reverse());
                     setLoading(false);
                 })
                 .catch(error => {
